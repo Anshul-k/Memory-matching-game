@@ -1,71 +1,105 @@
-# Getting Started with Create React App
+# Memory Matching Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple and fun memory matching game built using React. The game is fully configurable, extendible, and scalable, providing an engaging way to test and improve your memory. The project is styled using Tailwind CSS and is deployed on Vercel/Netlify.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Configurable grid size based on the URL path.
+- Fully responsive design using Tailwind CSS.
+- Game statistics: track the number of moves and elapsed time.
+- Scalable card generation and randomization on the frontend.
+- Modular components with clean code structure.
+- Deployed on Vercel/Netlify.
 
-### `npm start`
+## Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Check out the live demo of the game: [https://memory-matching.netlify.app/](https://memory-matching.netlify.app/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Requirements
 
-### `npm test`
+-Node.js (>=14.x)
+-npm (>=6.x) or Yarn (>=1.x)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+### `Clone the repository`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+git clone https://github.com/your-username/memory-matching-game.git
+cd memory-matching-game
+```
+### `Install dependencies`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Using npm:
+```
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Using yarn:
+```
+yarn install
+```
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `Start the development server:`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Using npm:
+```
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Using yarn:
+```
+yarn start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Play the game:
 
-## Learn More
+- Open your browser and navigate to http://localhost:3000.
+- Visit /2, /4, /6, /8, or /10 in the URL to play on a 2x2, 4x4, 6x6, 8x8, or 10x10 grid.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Game Instructions
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- The game starts when you click on the first card.
+- Flip the cards to reveal the images.
+- Match all pairs to win the game.
+- Your total moves and the time taken to complete the game will be displayed upon completion.
 
-### Code Splitting
+## Data Model
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The game does not require any backend services. However, if you were to integrate a backend, the expected data model might look like this:
 
-### Analyzing the Bundle Size
+```
+{
+  "cards": [
+    {
+      "id": "unique-card-id",
+      "image": "image-url",
+      "isFlipped": false,
+      "isMatched": false,
+      "isInvisible:" false
+    }
+  ],
+  "gameStatus": {
+    "moves": 0,
+    "elapsedTime": 0,
+    "gridSize": 4
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
 
-### Making a Progressive Web App
+### Scalable Considerations:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Card Pool: A larger pool of card images can be maintained for different grid sizes.
+- Game State: The game state can be saved to allow players to resume later.
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing:
 
-### Deployment
+Contributions are welcome! Please fork this repository, create a new branch, and submit a pull request with your changes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# memory-matching-game
+This project is licensed under the MIT License. For any inquiries or requests, please contact [anshul.kasana98@gmail.com](mailto:anshul.kasana98@gmail.com).
