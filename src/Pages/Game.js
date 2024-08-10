@@ -17,9 +17,10 @@ function Game() {
 
   const generateCards = useCallback(() => {
     if (number % 2 === 0) {
-      const cardImages = [...Array((number * number) / 2).keys()].map(
-        () => `/images/image${Math.floor(Math.random() * 71)}.png`
-      );
+      const cardImages = [...Array(72).keys()]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, (number * number) / 2)
+        .map((index) => `/images/image${index}.png`);
 
       const newCards = cardImages
         .concat(cardImages)
