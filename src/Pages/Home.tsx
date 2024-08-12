@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
+import Navbar from "../Components/Navbar.tsx";
 import { Link } from "react-router-dom";
-import { gridList, playInstruction } from "../utils/constants";
-import Footer from "../Components/Footer";
+import { gridList, playInstruction } from "../utils/constants.ts";
+import Footer from "../Components/Footer.tsx";
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-tr from-slate-50 to-orange-200">
       <Navbar />
@@ -57,6 +57,6 @@ function Home() {
       <Footer />
     </div>
   );
-}
+};
 
 export default Home;

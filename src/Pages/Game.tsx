@@ -1,24 +1,39 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, Navigate, useNavigate, Link } from "react-router-dom";
-import Navbar from "../Components/Navbar";
-import Card from "../Components/Card";
+import Navbar from "../Components/Navbar.tsx";
+import Card from "../Components/Card.tsx";
 import gameFinishImg from "../assets/yay-hooray.gif";
-import { formatTime, gameInstructions } from "../utils/constants";
+import { formatTime, gameInstructions } from "../utils/constants.ts";
 
-function Game() {
-  const { number } = useParams();
-  const [cards, setCards] = useState([]);
-  const [moves, setMoves] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameFinished, setGameFinished] = useState(false);
-  const [countdown, setCountdown] = useState(null);
-  const timerRef = useRef(null);
+// Define types for the card and statistics
+interface CardType {
+  id: number;
+  image: string;
+  isFlipped: boolean;
+  isMatched: boolean;
+  isInvisible: boolean;
+}
+
+interface Statistic {
+  label: string;
+  value: string | number;
+}
+
+const Game: React.FC = () => {
+  const { number } = useParams<{ number: string }>();
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [moves, setMoves] = useState<number>(0);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [gameFinished, setGameFinished] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const timerRef = useRef<number | null>(null);
   const navigate = useNavigate();
 
   const generateCards = useCallback(() => {
-    if (number % 2 === 0) {
-      const requiredLength = (number * number) / 2;
+    if (number && +number % 2 === 0) {
+      const gridSize = +number;
+      const requiredLength = (gridSize * gridSize) / 2;
       const cardImages = [...Array(72).keys()];
       const repeatedArray = Array(Math.ceil(requiredLength / cardImages.length))
         .fill(cardImages)
@@ -38,6 +53,7 @@ function Game() {
         .sort(() => Math.random() - 0.5);
       return newCards;
     }
+    return [];
   }, [number]);
 
   useEffect(() => {
@@ -49,9 +65,11 @@ function Game() {
       timerRef.current = setInterval(() => {
         setElapsedTime((prevTime) => prevTime + 1);
       }, 1000);
-    }
 
-    return () => clearInterval(timerRef.current);
+      return () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+    }
   }, [gameStarted, gameFinished]);
 
   useEffect(() => {
@@ -73,11 +91,11 @@ function Game() {
     }
   }, [gameFinished, navigate]);
 
-  const checkGameFinished = (cardsList) => {
+  const checkGameFinished = (cardsList: CardType[]): boolean => {
     return cardsList.every((card) => card.isMatched);
   };
 
-  const handleCardClick = (id) => {
+  const handleCardClick = (id: number) => {
     if (!gameStarted) {
       setGameStarted(true);
     }
@@ -118,7 +136,7 @@ function Game() {
   };
 
   const resetGame = () => {
-    clearInterval(timerRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
     setCards(generateCards());
     setMoves(0);
     setElapsedTime(0);
@@ -126,15 +144,15 @@ function Game() {
     setGameFinished(false);
   };
 
-  const statistic = [
+  const statistic: Statistic[] = [
     { label: "Grid", value: `${number} x ${number}` },
     { label: "Moves", value: moves },
     { label: "Time", value: formatTime(elapsedTime) },
   ];
 
-  return number % 2 !== 0 ? (
+  return number && +number % 2 !== 0 ? (
     <Navigate to="/error" />
-  ) : isNaN(number) || number > 100 ? (
+  ) : isNaN(Number(number)) || Number(number) > 100 ? (
     <Navigate to="/error" />
   ) : (
     <div className="bg-gradient-to-tr from-slate-50 to-orange-200 min-h-screen">
@@ -171,14 +189,14 @@ function Game() {
             </div>
             <div
               className={`flex flex-col ${
-                number > 12 ? "md:flex-col-reverse" : "md:flex-row"
+                Number(number) > 12 ? "md:flex-col-reverse" : "md:flex-row"
               } gap-6 w-full p-6 h-full items-center justify-center`}
             >
               <div>
                 <div
                   className="grid gap-2"
                   style={{
-                    gridTemplateColumns: `repeat(${number},  minmax(0, 1fr))`,
+                    gridTemplateColumns: `repeat(${number}, minmax(0, 1fr))`,
                   }}
                 >
                   {cards.map((card) => (
@@ -186,7 +204,7 @@ function Game() {
                       key={card.id}
                       card={card}
                       onClick={() => handleCardClick(card.id)}
-                      number={number}
+                      number={Number(number)}
                     />
                   ))}
                 </div>
@@ -235,6 +253,6 @@ function Game() {
       </div>
     </div>
   );
-}
+};
 
 export default Game;

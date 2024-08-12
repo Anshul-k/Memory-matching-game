@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./Pages/Home";
-import Error from "./Pages/Error";
-import Game from "./Pages/Game";
+import Home from "./Pages/Home.tsx";
+import Error from "./Pages/Error.tsx";
+import Game from "./Pages/Game.tsx";
 
 function App() {
   return (

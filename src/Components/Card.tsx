@@ -1,6 +1,17 @@
 import React, { useEffect } from "react";
 
-function Card({ card, onClick, number, onMatch }) {
+interface CardProps {
+  card: {
+    isMatched: boolean;
+    isInvisible: boolean;
+    isFlipped: boolean;
+    image: string;
+  };
+  onClick: () => void;
+  number: number;
+}
+
+const Card: React.FC<CardProps> = ({ card, onClick, number }) => {
   useEffect(() => {
     if (card.isMatched) {
       const timer = setTimeout(() => {
@@ -33,6 +44,6 @@ function Card({ card, onClick, number, onMatch }) {
       </div>
     </div>
   );
-}
+};
 
 export default Card;

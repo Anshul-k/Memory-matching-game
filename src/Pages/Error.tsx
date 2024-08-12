@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
+import Navbar from "../Components/Navbar.tsx";
 import PageNotFound from "../assets/page_not_found.svg";
 
-function Error() {
+const Error: React.FC = () => {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-tr from-slate-50 to-orange-200">
       <Navbar />

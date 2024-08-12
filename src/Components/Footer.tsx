@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer() {
+const Footer: React.FC = () => {
   return (
     <footer className="mt-auto w-full text-center p-4 bg-gray-600 text-gray-200">
       <p className="font-sans text-lg">
@@ -10,6 +10,7 @@ function Footer() {
       </p>
     </footer>
   );
-}
+};
 
 export default Footer;
+
