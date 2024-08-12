@@ -3,6 +3,7 @@ import { useParams, Navigate, useNavigate, Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Card from "../Components/Card";
 import gameFinishImg from "../assets/yay-hooray.gif";
+import { formatTime, gameInstructions } from "../utils/constants";
 
 function Game() {
   const { number } = useParams();
@@ -17,13 +18,16 @@ function Game() {
 
   const generateCards = useCallback(() => {
     if (number % 2 === 0) {
-      const cardImages = [...Array(72).keys()]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, (number * number) / 2)
+      const requiredLength = (number * number) / 2;
+      const cardImages = [...Array(72).keys()];
+      const repeatedArray = Array(Math.ceil(requiredLength / cardImages.length))
+        .fill(cardImages)
+        .flat()
+        .slice(0, requiredLength)
         .map((index) => `/images/image${index}.png`);
 
-      const newCards = cardImages
-        .concat(cardImages)
+      const newCards = repeatedArray
+        .concat(repeatedArray)
         .map((image, i) => ({
           id: i,
           image,
@@ -113,20 +117,6 @@ function Game() {
     }
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}m ${secs}s`;
-  };
-
-  const gridClassName = {
-    2: "grid grid-cols-2 gap-2",
-    4: "grid grid-cols-4 gap-2",
-    6: "grid grid-cols-6 gap-2",
-    8: "grid grid-cols-8 gap-2",
-    10: "grid grid-cols-10 gap-2",
-  };
-
   const resetGame = () => {
     clearInterval(timerRef.current);
     setCards(generateCards());
@@ -136,11 +126,15 @@ function Game() {
     setGameFinished(false);
   };
 
-  if (number % 2 !== 0) {
-    return <Navigate to="/error" />;
-  }
+  const statistic = [
+    { label: "Grid", value: `${number} x ${number}` },
+    { label: "Moves", value: moves },
+    { label: "Time", value: formatTime(elapsedTime) },
+  ];
 
-  return isNaN(number) || number >= 12 ? (
+  return number % 2 !== 0 ? (
+    <Navigate to="/error" />
+  ) : isNaN(number) || number > 100 ? (
     <Navigate to="/error" />
   ) : (
     <div className="bg-gradient-to-tr from-slate-50 to-orange-200 min-h-screen">
@@ -175,9 +169,18 @@ function Game() {
             <div className="p-2 m-2 text-2xl font-bold text-orange-600">
               Let's see how sharp your memory is!
             </div>
-            <div className="flex flex-col md:flex-row gap-6 w-full p-6 h-full items-center justify-center">
+            <div
+              className={`flex flex-col ${
+                number > 12 ? "md:flex-col-reverse" : "md:flex-row"
+              } gap-6 w-full p-6 h-full items-center justify-center`}
+            >
               <div>
-                <div className={gridClassName[number]}>
+                <div
+                  className="grid gap-2"
+                  style={{
+                    gridTemplateColumns: `repeat(${number},  minmax(0, 1fr))`,
+                  }}
+                >
                   {cards.map((card) => (
                     <Card
                       key={card.id}
@@ -189,24 +192,17 @@ function Game() {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="font-extrabold text-lg text-gray-600">
-                  Grid:
-                  <span className="ml-2 font-semibold text-gray-700">
-                    {number} x {number}
-                  </span>
-                </div>
-                <div className="font-extrabold text-lg text-gray-600">
-                  Moves:
-                  <span className="ml-2 font-semibold text-gray-700">
-                    {moves}
-                  </span>
-                </div>
-                <div className="font-extrabold text-lg text-gray-600">
-                  Time:
-                  <span className="ml-2 font-semibold text-gray-700">
-                    {formatTime(elapsedTime)}
-                  </span>
-                </div>
+                {statistic.map((stat, index) => (
+                  <div
+                    key={index}
+                    className="font-extrabold text-lg text-gray-600"
+                  >
+                    {stat.label}:
+                    <span className="ml-2 font-semibold text-gray-700">
+                      {stat.value}
+                    </span>
+                  </div>
+                ))}
                 <div className="flex gap-5 pt-5">
                   <button
                     onClick={resetGame}
@@ -225,15 +221,11 @@ function Game() {
                     Instructions:
                   </p>
                   <ul className="ml-5 text-gray-500">
-                    <li className="list-disc">
-                      Timer will start when you start the game.
-                    </li>
-                    <li className="list-disc">
-                      Flip the cards to reveal the images.
-                    </li>
-                    <li className="list-disc">
-                      Match all pairs to win the game!
-                    </li>
+                    {gameInstructions.map((instruction, i) => (
+                      <li key={i} className="list-disc">
+                        {instruction}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>

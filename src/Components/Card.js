@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-function Card({ card, onClick, number }) {
+function Card({ card, onClick, number, onMatch }) {
   useEffect(() => {
     if (card.isMatched) {
       const timer = setTimeout(() => {
@@ -11,13 +11,17 @@ function Card({ card, onClick, number }) {
     }
   }, [card.isMatched, card]);
 
+  const containerClasses =
+    number >= 20 ? "w-auto h-auto" : "sm:w-20 sm:h-20 md:w-20 md:h-20";
+
+  const imgSrc =
+    card.isFlipped || card.isMatched ? card.image : "images/black.png";
+
   return (
     <div
-      className={`${
-        number >= 6
-          ? "sm:w-12 sm-h-12 md:w-10 md:h-10 lg:w-16 lg:h-16"
-          : "sm:w-24 sm:h-24 md:w-24 md:h-24"
-      } cursor-pointer ${card.isInvisible ? "invisible" : ""}`}
+      className={`${containerClasses} cursor-pointer ${
+        card.isInvisible ? "invisible" : ""
+      }`}
       onClick={onClick}
     >
       <div
@@ -25,13 +29,7 @@ function Card({ card, onClick, number }) {
           card.isFlipped ? "transform rotate-y-180" : ""
         }`}
       >
-        <img
-          src={
-            card.isFlipped || card.isMatched ? card.image : "images/black.png"
-          }
-          alt="card"
-          className="w-full h-full object-cover"
-        />
+        <img src={imgSrc} alt="card" className="w-full h-full object-cover" />
       </div>
     </div>
   );
